@@ -1,0 +1,8 @@
+# Default values for nightly-scale.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+namespace: ibs-prodtest
+deployments:
+  - bip-ibs-icp-data-service-prodtest
+  - bip-ibs-ins-data-service-prodtest

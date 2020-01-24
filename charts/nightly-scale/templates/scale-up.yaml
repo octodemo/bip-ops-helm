@@ -1,0 +1,23 @@
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: scale-up
+  namespace: {{ .Values.namespace }}
+spec:
+  schedule: "0 11 * * *"
+  concurrencyPolicy: "Forbid"
+  successfulJobsHistoryLimit: 0
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          {{- range .Values.deployments }}
+          - name: scale-up-{{ . }}
+            image: bitnami/kubectl:latest
+            command: ["kubectl", "scale", "deployment", {{ . | quote }}, "--replicas=1"]
+          {{- end }}
+          restartPolicy: OnFailure
+          serviceAccount: scaler

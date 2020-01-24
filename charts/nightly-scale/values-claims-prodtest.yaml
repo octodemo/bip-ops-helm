@@ -1,0 +1,7 @@
+# Default values for nightly-scale.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+namespace: claims-prodtest
+deployments:
+  - bip-vetservices-claims-prodtest
