@@ -1,0 +1,21 @@
+---
+kind: CronJob
+apiVersion: batch/v1beta1
+metadata:
+  name: {{ include "bms.name" . }}
+  labels:
+    {{- include "bms.labels" . | nindent 4 }}
+spec:
+  schedule: "{{ .Values.cron.minute }} {{ .Values.cron.hour }} * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 0
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccount: {{ include "bms.serviceAccountName" . }}
+          restartPolicy: OnFailure
+          containers:
+          - name: {{ include "bms.name" . }}
+            image: container-registry.prod8.bip.va.gov/{{ include "bms.name" . }}:{{ .Chart.AppVersion }}
