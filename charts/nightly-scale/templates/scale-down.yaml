@@ -5,7 +5,7 @@ metadata:
   name: scale-down
   namespace: {{ .Values.namespace }}
 spec:
-  schedule: "0 7 * * *"
+  schedule: "{{ .Values.scale_down_time.minute }} {{ .Values.scale_down_time.hour }} * * *"
   concurrencyPolicy: "Forbid"
   successfulJobsHistoryLimit: 0
   failedJobsHistoryLimit: 1

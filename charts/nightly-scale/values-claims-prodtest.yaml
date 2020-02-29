@@ -5,3 +5,10 @@
 namespace: claims-prodtest
 deployments:
   - bip-vetservices-claims-prodtest
+# Times are in UTC
+scale_down_time:
+  hour: 7
+  minute: 0
+scale_up_time:
+  hour: 12
+  minute: 0
