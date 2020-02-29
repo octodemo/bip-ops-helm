@@ -1,4 +1,4 @@
-# How to install the KubeCron jobs to automatically scale down deployments during the night for database refresh
+# How to install the CronJobs to automatically scale down deployments during the night for database refresh
 
 The first thing that needs to be installed is the ClusterRole. This only needs to be done once because this is a global resource.
 
