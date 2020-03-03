@@ -2,9 +2,10 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+# This is the time according to the master server. (Default TZ:UTC)
 cron:
   hour: 12
-  minute: 0
+  minute: 15
 
 serviceAccount:
   # The name of the ServiceAccount to use (Default: bms.name)
