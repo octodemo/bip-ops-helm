@@ -1,12 +1,14 @@
+{{ $dot := . }}
+{{ range $k, $v := .Values.cronjobs }}
 ---
 kind: CronJob
 apiVersion: batch/v1beta1
 metadata:
-  name: {{ include "bms.name" . }}
+  name: {{ $v.name }}
   labels:
-    {{- include "bms.labels" . | nindent 4 }}
+    {{- include "bms.labels" $dot | nindent 4 }}
 spec:
-  schedule: "{{ .Values.cron.minute }} {{ .Values.cron.hour }} * * *"
+  schedule: {{ include "bms.cronstring" . | quote }}
   concurrencyPolicy: Forbid
   successfulJobsHistoryLimit: 0
   failedJobsHistoryLimit: 1
@@ -14,8 +16,9 @@ spec:
     spec:
       template:
         spec:
-          serviceAccount: {{ include "bms.serviceAccountName" . }}
+          serviceAccount: {{ $dot.Values.serviceaccount.name }}
           restartPolicy: OnFailure
           containers:
-          - name: {{ include "bms.name" . }}
-            image: container-registry.prod8.bip.va.gov/{{ include "bms.name" . }}:{{ .Chart.AppVersion }}
+          - name: bms
+            image: container-registry.prod8.bip.va.gov/bms:{{ $dot.Chart.AppVersion }}
+{{- end }}

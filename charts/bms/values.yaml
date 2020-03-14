@@ -1,16 +1,25 @@
 # Default values for bms.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
+# I refuse to do Helm's "best" practice of using camelCase. GFY
 
-# This is the time according to the master server. (Default TZ:UTC)
-cron:
-  hour: 12
-  minute: 15
+clusterrole:
+  name: bms
 
-serviceAccount:
-  # The name of the ServiceAccount to use (Default: bms.name)
-  #name: bms
-  # The ClusterRole to bind this ServiceAccount to
-  clusterRole: cluster-reader
-  # Annotations to add to the service account
+# Each cronjob needs a unique name.
+# Defaults:
+#   hour: 12
+#   minute: 0
+#   dayofmonth: *
+#   month: *
+#   dayofweek: *
+cronjobs:
+  - name: morning-email
+    dayofweek: 1-5
+    hour: 7
+    minute: 30
+  - name: evening-email
+    dayofweek: 1-5
+    hour: 16
+
+serviceaccount:
+  name: bms
   annotations: {}

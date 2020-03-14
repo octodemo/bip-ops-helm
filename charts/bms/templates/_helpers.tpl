@@ -39,7 +39,8 @@ app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
 {{- end -}}
 
-{{/* Create the name of the service account to use */}}
-{{- define "bms.serviceAccountName" -}}
-{{ default (include "bms.name" .) .Values.serviceAccount.name }}
+{{/* Create the cron schedule string */}}
+{{/* SPACING IS VERY IMPORTANT */}}
+{{- define "bms.cronstring" -}}
+{{ .minute | default "0" }} {{ .hour | default "12" }} {{ .dayofmonth | default "*" }} {{ .month | default "*" }} {{ .dayofmonth | default "*" }}
 {{- end -}}
