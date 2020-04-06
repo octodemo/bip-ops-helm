@@ -1,0 +1,44 @@
+## Bitnami Fluentd image version
+## ref: https://hub.docker.com/r/bitnami/fluentd/tags/
+##
+image:
+  registry: docker.io
+  repository: bitnami/fluentd
+  tag: 1.10.0-debian-10-r2
+  ## Specify a imagePullPolicy
+  ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
+  ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
+  ##
+  pullPolicy: IfNotPresent
+
+## String to partially override fluentd.fullname template (will maintain the release name)
+##
+# nameOverride:
+
+## String to fully override fluentd.fullname template
+##
+# fullnameOverride:
+
+## Cluster Domain
+##
+clusterDomain: cluster.local
+
+config:
+  echo: true
+
+healthcheck:
+  enabled: true
+  #port: 9880 # Defaults to 9880
+
+service:
+  enabled: true
+  port: 1269
+
+ingress:
+  enabled: true
+  #host: localhost # Defaults to fluent-relay.name
+
+elasticsearch:
+  enabled: true
+  host: es-coordinating-only
+  #port: 9200 # Defaults to 9200

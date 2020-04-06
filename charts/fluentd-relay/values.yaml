@@ -1,0 +1,46 @@
+## Bitnami Fluentd image version
+## ref: https://hub.docker.com/r/bitnami/fluentd/tags/
+##
+image:
+  registry: docker.io
+  repository: bitnami/fluentd
+  tag: 1.10.0-debian-10-r2
+  ## Specify a imagePullPolicy
+  ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
+  ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
+  ##
+  pullPolicy: IfNotPresent
+
+## String to partially override fluentd.fullname template (will maintain the release name)
+##
+# nameOverride:
+
+## String to fully override fluentd.fullname template
+##
+# fullnameOverride:
+
+## Cluster Domain
+##
+clusterDomain: cluster.local
+
+config:
+  echo: false # Do not echo inbound items because that would be double logged.
+
+healthcheck:
+  enabled: true
+  #port: 9880 # Defaults to 9880
+
+service:
+  enabled: true
+  port: 1269
+
+# This can be a huge security problem since we do no
+# authentication in ES.
+ingress:
+  enabled: false
+  host: fluentd-relay.prod8.bip.va.gov
+
+elasticsearch:
+  enabled: true
+  host: prod8-elasticsearch-client.logging.svc.prod8
+  #port: 9200 # Defaults to 9200

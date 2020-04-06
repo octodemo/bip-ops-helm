@@ -1,0 +1,50 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fluentd-relay-config
+  labels: {{- include "fluentd-relay.labels" . | nindent 4 }}
+data:
+  fluentd.conf: |
+    {{ if .Values.healthcheck.enabled -}}
+    # HTTP input for the liveness and readiness probes
+    <source>
+      @type http
+      port {{ .Values.healthcheck.port | default "9880" }}
+    </source>
+
+    {{ end -}}
+    # Throw the healthcheck to null instead of forwarding it
+    <match fluentd.healthcheck>
+      @type null
+    </match>
+
+    # Listen for incoming events
+    <source>
+      @type http
+      port {{ include "fluentd-relay.servicePort" . }}
+      <parse>
+        @type json
+      </parse>
+    </source>
+
+    # Send the logs to the standard output
+    <match **>
+      @type copy
+      {{ if .Values.elasticsearch.enabled -}}
+      <store>
+        @type elasticsearch
+        host {{ .Values.elasticsearch.host }}
+        port {{ .Values.elasticsearch.port | default "9200" }}
+        include_tag_key true
+        tag_key @log_name
+        logstash_format true
+        logstash_prefix relay
+        flush_interval 10s
+      </store>
+      {{- end }}
+      {{ if .Values.config.echo -}}
+      <store>
+        @type stdout
+      </store>
+      {{- end }}
+    </match>
