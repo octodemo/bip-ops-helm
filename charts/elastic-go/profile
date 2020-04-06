@@ -1,0 +1,1 @@
+alias e="/usr/local/bin/elastic --baseurl http://${ELASTICSEARCH_HOST}:${ELASTICSEARCH_PORT}/"

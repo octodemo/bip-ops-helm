@@ -1,0 +1,21 @@
+image:
+  registry: docker.io
+  repository: zanloy/elastic-go
+  tag: 0.0.1
+  ## Specify a imagePullPolicy
+  ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
+  ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
+  ##
+  pullPolicy: IfNotPresent
+
+## String to partially override elastic-go.fullname template (will maintain the release name)
+##
+# nameOverride:
+
+## String to fully override elastic-go.fullname template
+##
+# fullnameOverride:
+
+elasticsearch:
+  host: prod8-elasticsearch-client.logging.svc.prod8
+  #port: 9200 # Defaults to 9200
