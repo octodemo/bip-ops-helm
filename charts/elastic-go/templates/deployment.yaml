@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "elastic-go.name" . }}
+  labels: {{- include "elastic-go.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {{- include "elastic-go.matchLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels: {{- include "elastic-go.labels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: elastic-go
+          image: {{ include "elastic-go.image" . }}
+          env:
+            - name: ENV
+              value: "/etc/profile.d/aliases"
+            - name: ELASTICSEARCH_HOST
+              value: {{ .Values.elasticsearch.host | quote }}
+            - name: ELASTICSEARCH_PORT
+              value: {{ .Values.elasticsearch.port | default "9200" | quote }}
+          volumeMounts:
+            - name: aliases
+              mountPath: /etc/profile.d/aliases
+              subPath: aliases
+          command: ["tail", "-f", "/dev/null"]
+          resources:
+            limits: {}
+            requests: {}
+      volumes:
+        - name: aliases
+          configMap:
+            name: {{ include "elastic-go.configmapName" . }}
+            defaultMode: 0444

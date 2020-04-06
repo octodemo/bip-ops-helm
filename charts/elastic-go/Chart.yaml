@@ -1,0 +1,15 @@
+apiVersion: v1
+name: elastic-go
+version: 0.0.1
+appVersion: 1.0.0
+description: An elasticsearch troubleshooting tool
+keywords:
+  - elasticsearch
+  - logging
+  - logs
+  - data
+home: https://github.com/Rolinh/elastic-go
+maintainers:
+  - name: Zan
+    email: zan.loy@gmail.com
+icon: https://bitnami.com/assets/stacks/elasticsearch/img/elasticsearch-stack-110x117.png
