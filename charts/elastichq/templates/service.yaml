@@ -1,0 +1,10 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ include "elastichq.fullname" . }}
+  labels: {{- include "elastichq.labels" . | nindent 4 }}
+spec:
+  selector: {{- include "elastichq.matchLabels" . | nindent 4 }}
+  ports:
+    - name: http
+      port: 5000
