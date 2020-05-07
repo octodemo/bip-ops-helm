@@ -97,7 +97,7 @@ volumePermissions:
 
 ## Cluster domain
 ##
-clusterDomain: prod.bip.va.gov
+clusterDomain: prod8
 
 ## Elasticsearch cluster name
 ##
