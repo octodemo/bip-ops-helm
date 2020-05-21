@@ -2,7 +2,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "s3-proxy.name" -}}
+{{- define "proxy.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
@@ -11,7 +11,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "s3-proxy.fullname" -}}
+{{- define "proxy.fullname" -}}
 {{- if .Values.fullnameOverride -}}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" -}}
 {{- else -}}
@@ -27,16 +27,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "s3-proxy.chart" -}}
+{{- define "proxy.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{/*
 Common labels
 */}}
-{{- define "s3-proxy.labels" -}}
-helm.sh/chart: {{ include "s3-proxy.chart" . }}
-{{ include "s3-proxy.selectorLabels" . }}
+{{- define "proxy.labels" -}}
+helm.sh/chart: {{ include "proxy.chart" . }}
+{{ include "proxy.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -46,15 +46,19 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "s3-proxy.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "s3-proxy.name" . }}
+{{- define "proxy.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "proxy.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
 
-{{- define "s3-proxy.configName" -}}
-{{- include "s3-proxy.fullname" . }}-config
+{{- define "proxy.configName" -}}
+{{- include "proxy.fullname" . }}-config
 {{- end -}}
 
-{{- define "s3-proxy.servicePort" -}}
+{{- define "proxy.servicePort" -}}
+{{- if .Values.service -}}
 {{ .Values.service.port | default 8080 }}
+{{- else -}}
+8080
+{{- end -}}
 {{- end -}}

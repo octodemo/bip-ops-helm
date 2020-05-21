@@ -1,5 +1,8 @@
 {{- if .Values.ingress.enabled -}}
+{{- if .Values.endpoints.no_auth -}}
 {{- $baseHostname := .Values.baseHostname -}}
+{{- $fullname := (include "proxy.fullname" .) -}}
+{{- $servicePort := (include "proxy.servicePort" .) -}}
 {{- if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
 apiVersion: networking.k8s.io/v1beta1
 {{- else -}}
@@ -7,24 +10,27 @@ apiVersion: extensions/v1beta1
 {{- end }}
 kind: Ingress
 metadata:
-  name: {{ include "s3-proxy.fullname" . }}
-  labels: {{ include "s3-proxy.labels" . | nindent 4 }}
+  name: {{ include "proxy.fullname" . }}
+  labels: {{ include "proxy.labels" . | nindent 4 }}
   {{- with .Values.ingress.annotations }}
   annotations: {{ toYaml . | nindent 4 }}
   {{- end }}
 spec:
   tls:
   - hosts:
-    {{- range .Values.endpoints }}
+    {{- range .Values.endpoints.no_auth }}
     - {{ printf "%s.%s" .host $baseHostname | quote }}
     {{- end }}
     secretName: {{ .Values.secretName }}
   rules:
-  - host: {{ printf "%s.%s" "*" $baseHostname | quote }}
+  {{- range .Values.endpoints.no_auth }}
+  - host: {{ printf "%s.%s" .host $baseHostname | quote }}
     http:
       paths:
       - path: /
         backend:
-          serviceName: {{ include "s3-proxy.fullname" . }}
-          servicePort: {{ include "s3-proxy.servicePort" . }}
+          serviceName: {{ $fullname }}
+          servicePort: {{ $servicePort }}
+  {{- end }}
+{{- end -}}
 {{- end -}}

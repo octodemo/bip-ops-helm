@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "s3-proxy.fullname" . }}
+  name: {{ include "proxy.fullname" . }}
   labels:
-    {{- include "s3-proxy.labels" . | nindent 4 }}
+    {{- include "proxy.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.deployment.replicaCount }}
   selector:
-    matchLabels: {{ include "s3-proxy.selectorLabels" . | nindent 6 }}
+    matchLabels: {{ include "proxy.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      labels: {{ include "s3-proxy.labels" . | nindent 8 }}
+      labels: {{ include "proxy.labels" . | nindent 8 }}
     spec:
       securityContext: {{ toYaml .Values.deployment.podSecurityContext | nindent 8 }}
       containers:
-        - name: {{ include "s3-proxy.fullname" . }}
+        - name: {{ include "proxy.fullname" . }}
           securityContext: {{ toYaml .Values.deployment.securityContext | nindent 12 }}
           image: "{{ .Values.deployment.image.repository }}:{{ .Values.deployment.image.tag }}"
           imagePullPolicy: {{ .Values.deployment.image.pullPolicy }}
@@ -41,7 +41,7 @@ spec:
       volumes:
         - name: config-volume
           configMap:
-            name: {{ include "s3-proxy.configName" . }}
+            name: {{ include "proxy.configName" . }}
       {{- with .Values.deployment.nodeSelector }}
       nodeSelector: {{ toYaml . | nindent 8 }}
       {{- end }}

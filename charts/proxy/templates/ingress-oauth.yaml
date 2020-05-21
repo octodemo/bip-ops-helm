@@ -1,0 +1,40 @@
+{{- if .Values.ingress.enabled -}}
+{{- if .Values.endpoints.oauth -}}
+{{- $baseHostname := .Values.baseHostname -}}
+{{- $fullname := (include "proxy.fullname" .) -}}
+{{- $servicePort := (include "proxy.servicePort" .) -}}
+{{- if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1beta1
+{{- else -}}
+apiVersion: extensions/v1beta1
+{{- end }}
+kind: Ingress
+metadata:
+  name: {{ include "proxy.fullname" . }}-oauth
+  labels: {{ include "proxy.labels" . | nindent 4 }}
+  annotations:
+    {{- with .Values.ingress.annotations }}
+    {{ toYaml . | indent 4 }}
+    {{- end }}
+    nginx.ingress.kubernetes.io/auth-signin: {{ .Values.oauth.signin }}
+    nginx.ingress.kubernetes.io/auth-url: {{ .Values.oauth.url }}
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+spec:
+  tls:
+  - hosts:
+    {{- range .Values.endpoints.oauth }}
+    - {{ printf "%s.%s" .host $baseHostname | quote }}
+    {{- end }}
+    secretName: {{ .Values.secretName }}
+  rules:
+  {{- range .Values.endpoints.oauth }}
+  - host: {{ printf "%s.%s" .host $baseHostname | quote }}
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: {{ $fullname }}
+          servicePort: {{ $servicePort }}
+  {{- end }}
+{{- end -}}
+{{- end -}}

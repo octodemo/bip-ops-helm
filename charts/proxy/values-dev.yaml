@@ -5,25 +5,24 @@
 nameOverride: ""
 fullnameOverride: ""
 
-baseHostname: proxy.prod8.bip.va.gov
-endpoints:
-  - host: bpds
-    s3: bip-bpds-prod.s3.us-gov-west-1.amazonaws.com
-  - host: vefs-rrc
-    s3: project-vefs-rrc-prod-bucket.s3.us-gov-west-1.amazonaws.com
-  - host: vefs-rrc-cola
-    s3: project-vefs-rrc-cola-bucket.s3.us-gov-west-1.amazonaws.com
-  - host: vefs-rrc-perf
-    s3: project-vefs-rrc-perf-bucket.s3.us-gov-west-1.amazonaws.com
-  - host: vefs-rrc-preprod
-    s3: project-vefs-rrc-preprod-bucket.s3.us-gov-west-1.amazonaws.com
-  - host: vefs-rrc-prodtest
-    s3: project-vefs-rrc-prodtest-bucket.s3.us-gov-west-1.amazonaws.com
+oauth:
+  signin: ""
+  url: ""
 
-secretName: s3-proxy-tls
+baseHostname: proxy.dev8.bip.va.gov
+endpoints:
+  no_auth:
+    - host: vefs-rrc-dev
+      endpoint: https://project-vefs-rrc-dev-bucket.s3.us-gov-west-1.amazonaws.com
+    - host: vefs-rrc-int
+      endpoint: https://project-vefs-rrc-int-bucket.s3.us-gov-west-1.amazonaws.com
+    - host: vefs-rrc-tst
+      endpoint: https://project-vefs-rrc-tst-bucket.s3.us-gov-west-1.amazonaws.com
+
+secretName: proxy-dev-secret
 
 deployment:
-  replicaCount: 3
+  replicaCount: 2
   image:
     repository: nginx
     tag: '1.18'

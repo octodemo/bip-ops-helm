@@ -5,16 +5,25 @@
 nameOverride: ""
 fullnameOverride: ""
 
-baseHostname: proxy.dev8.bip.va.gov
-endpoints:
-  - host: vefs-rrc-dev
-    s3: project-vefs-rrc-dev-bucket.s3.us-gov-west-1.amazonaws.com
-  - host: vefs-rrc-int
-    s3: project-vefs-rrc-int-bucket.s3.us-gov-west-1.amazonaws.com
-  - host: vefs-rrc-tst
-    s3: project-vefs-rrc-tst-bucket.s3.us-gov-west-1.amazonaws.com
+oauth:
+  signin: ""
+  url: ""
 
-secretName: proxy-dev-secret
+baseHostname: proxy.stage8.bip.va.gov
+endpoints:
+  no_auth:
+    - host: vefs-rrc-ivv
+      endpoint: project-vefs-rrc-ivv-bucket.s3.us-gov-west-1.amazonaws.com
+    - host: vefs-rrc-uat
+      endpoint: project-vefs-rrc-uat-bucket.s3.us-gov-west-1.amazonaws.com
+    - host: vefs-rrc-pdt
+      endpoint: project-vefs-rrc-pdt-bucket.s3.us-gov-west-1.amazonaws.com
+    - host: vefs-rrc-pat
+      endpoint: project-vefs-rrc-pat-bucket.s3.us-gov-west-1.amazonaws.com
+    - host: vefs-rrc-demo
+      endpoint: project-vefs-rrc-demo-bucket.s3.us-gov-west-1.amazonaws.com
+
+secretName: proxy-stage-secret
 
 deployment:
   replicaCount: 2

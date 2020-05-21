@@ -1,0 +1,61 @@
+# Default values for proxy.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+nameOverride: ""
+fullnameOverride: ""
+
+oauth:
+  signin: "https://oauth.prod8.bip.va.gov/oauth2/start?rd=https://$host$request_uri$is_args$args"
+  url: "https://oauth.prod8.bip.va.gov/oauth2/auth"
+
+baseHostname: proxy.prod8.bip.va.gov
+endpoints:
+  oauth:
+    - host: kibana
+      endpoint: https://vpc-prod-g7hmds6uohzekcnplmstbsrgha.us-gov-west-1.es.amazonaws.com
+  no_auth:
+    - host: bpds
+      endpoint: https://bip-bpds-prod.s3.us-gov-west-1.amazonaws.com
+    - host: vefs-rrc
+      endpoint: https://project-vefs-rrc-prod-bucket.s3.us-gov-west-1.amazonaws.com
+    - host: vefs-rrc-cola
+      endpoint: https://project-vefs-rrc-cola-bucket.s3.us-gov-west-1.amazonaws.com
+    - host: vefs-rrc-perf
+      endpoint: https://project-vefs-rrc-perf-bucket.s3.us-gov-west-1.amazonaws.com
+    - host: vefs-rrc-preprod
+      endpoint: https://project-vefs-rrc-preprod-bucket.s3.us-gov-west-1.amazonaws.com
+    - host: vefs-rrc-prodtest
+      endpoint: https://project-vefs-rrc-prodtest-bucket.s3.us-gov-west-1.amazonaws.com
+
+secretName: s3-proxy-tls
+
+deployment:
+  replicaCount: 3
+  image:
+    repository: nginx
+    tag: '1.18'
+    pullPolicy: IfNotPresent
+  resources: {}
+  podSecurityContext: {}
+    # fsGroup: 2000
+  securityContext: {}
+    # capabilities:
+    #   drop:
+    #   - ALL
+    # readOnlyRootFilesystem: true
+    # runAsNonRoot: true
+    # runAsUser: 1000
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+service:
+  type: ClusterIP
+  port: 8080
+
+ingress:
+  enabled: true
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
