@@ -10,7 +10,7 @@ global:
   ## Coordinating name to be used in the Kibana subchart (service name)
   ##
   coordinating:
-    name: coordinating-only
+    name: coordinator
   kibanaEnabled: true
 
 ## Bitnami Elasticsearch image version
@@ -294,16 +294,16 @@ coordinating:
   ## Elasticsearch coordinating-only container's resource requests and limits
   ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
   ##
-  resources:
+  resources: {}
     ## We usually recommend not to specify default resources and to leave this as a conscious
     ## choice for the user. This also increases chances charts run on environments with little
     ## resources, such as Minikube.
-    limits: {}
+    #limits: {}
     #   cpu: 100m
     #   memory: 384Mi
-    requests:
-      cpu: 25m
-      memory: 256Mi
+    #requests:
+    #  cpu: 25m
+    #  memory: 256Mi
   ## Elasticsearch coordinating-only container's liveness and readiness probes
   ## ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#container-probes
   ##
@@ -401,7 +401,7 @@ data:
     #   cpu: 100m
     #   memory: 2176Mi
     requests:
-      cpu: 25m
+      cpu: 250m
       memory: 2048Mi
   ## Elasticsearch data container's liveness and readiness probes
   ## ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#container-probes
@@ -562,8 +562,8 @@ curator:
     schedule: "0 1 * * *"
     annotations: {}
     concurrencyPolicy: ""
-    failedJobsHistoryLimit: ""
-    successfulJobsHistoryLimit: ""
+    failedJobsHistoryLimit: "1"
+    successfulJobsHistoryLimit: "0"
     jobRestartPolicy: Never
 
   podAnnotations: {}
@@ -574,7 +574,7 @@ curator:
 
   serviceAccount:
     # Specifies whether a ServiceAccount should be created
-    create: true
+    create: false
     # The name of the ServiceAccount to use.
     # If not set and create is true, a name is generated using the fullname template
     name:
