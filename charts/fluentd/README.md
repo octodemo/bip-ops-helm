@@ -7,7 +7,7 @@
 **THIS IS A WORK IN PROGRESS**
 This chart will install everything necessary to setup fluentd in the BIP environment. It is a heavily modified version of the bitnami fluentd chart.
 
-** Upstream Readme **
+**UPSTREAM README**
 
 ## TL;DR;
 
