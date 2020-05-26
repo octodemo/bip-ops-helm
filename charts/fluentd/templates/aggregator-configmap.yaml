@@ -88,24 +88,23 @@ data:
       reserve_data
       <parse>
         @type multi_format
-#        <pattern>
-#          format regexp
-#          expression /^Award process completed for claim ID (?<claimid>[0-9]+)$/
-#        </pattern>
+    #    <pattern>
+    #      format regexp
+    #      expression /^Award process completed for claim ID (?<claimid>[0-9]+)$/
+    #    </pattern>
         # Not sure this one actually works
-#        <pattern>
-#          format regexp
-#          expression /^Rating process completed for claim ID (?<claimid>[0-9]+)$/
-#        </pattern>
+    #    <pattern>
+    #      format regexp
+    #      expression /^Rating process completed for claim ID (?<claimid>[0-9]+)$/
+    #    </pattern>
         <pattern>
           format regexp
-#          expression /^Pension Automation Off-ramp: (?<offramp_status>[A-Z_]+) - Claim ID (?<claimid>[0-9]+) (?<offramp_reason>.*)$/
           expression /^Pension Automation Off-ramp: (?<offramp_status>[A-Z_]+) - (?<offramp_reason>.*)$/
         </pattern>
-#        <pattern>
-#          format regexp
-#          expression /^Classifier Decision for claim ID (?<claimid>[0-9]+): (?<classifier_decision>[A-Z_]+), (?<classifier_match>[A-Z_]+)$/
-#        </pattern>
+    #    <pattern>
+    #      format regexp
+    #      expression /^Classifier Decision for claim ID (?<claimid>[0-9]+): (?<classifier_decision>[A-Z_]+), (?<classifier_match>[A-Z_]+)$/
+    #    </pattern>
         <pattern>
           format none
         </pattern>
