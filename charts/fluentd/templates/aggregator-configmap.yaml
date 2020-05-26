@@ -53,60 +53,34 @@ data:
       port 9880
     </source>
 
-    # Throw the healthcheck to the null instead of forwarding it
+    # Throw the healthcheck to null instead of forwarding it
     <match fluentd.healthcheck>
       @type null
     </match>
 
-    # Tag the record based on the namespace
-    <match kubernetes.**>
-      @type rewrite_tag_filter
-      <rule>
-        key $['kubernetes']['namespace_name']
-        pattern ^(.+)$
-        tag $1.${tag}
-      </rule>
-    </match>
-    
-    # Attempt to parse the log field as json
-    <filter pension-automation-prod.kubernetes.**>
-      @type parser
-      key_name log
-      reserve_time
-      reserve_data
-      remove_key_name_field true
-      <parse>
-        @type multi_format
-        <pattern>
-          format json
-        </pattern>
-        <pattern>
-          format none
-        </pattern>
-      </parse>
-    </filter>
+    # Break out app and env from namespace
 
-    # Until PA gets their acts together and can produce valid json...
+    ## Until PA gets their acts together and can produce valid json...
+    #<filter pension-automation-prod.kubernetes.**>
+    #  @type record_modifier
+    #  <replace>
+    #    key message
+    #    expression /\\/
+    #    replace ''
+    #  </replace>
+    #</filter>
+
+    ## Extract claimid
+    # Fix inconsistent case of claimid/claimId
     <filter pension-automation-prod.kubernetes.**>
       @type record_modifier
-      <replace>
-        key message
-        expression /\\/
-        replace ''
-      </replace>
+      #<record>
+      #  claimid ${record['claimId'].nil? ? 0 : record['claimId'].to_i}
+      #</record>
+      remove_key claimId
     </filter>
 
-    # Because consistency is hard, some events use the "mag" tag instead of "message"
-    <filter pension-automation-prod.kubernetes.**>
-      @type record_modifier
-
-      <record>
-        message ${record['msg']}
-      </record>
-      remove_keys msg
-    </filter>
-
-    # Expand out Off-ramp data
+    # Expand out message data
     <filter pension-automation-prod.kubernetes.**>
       @type parser
       key_name message
@@ -114,27 +88,24 @@ data:
       reserve_data
       <parse>
         @type multi_format
-        <pattern>
-          format regexp
-          expression /^Award process completed for claim ID (?<claimid>[0-9]+)$/
-        </pattern>
+#        <pattern>
+#          format regexp
+#          expression /^Award process completed for claim ID (?<claimid>[0-9]+)$/
+#        </pattern>
         # Not sure this one actually works
+#        <pattern>
+#          format regexp
+#          expression /^Rating process completed for claim ID (?<claimid>[0-9]+)$/
+#        </pattern>
         <pattern>
           format regexp
-          expression /^Rating process completed for claim ID (?<claimid>[0-9]+)$/
+#          expression /^Pension Automation Off-ramp: (?<offramp_status>[A-Z_]+) - Claim ID (?<claimid>[0-9]+) (?<offramp_reason>.*)$/
+          expression /^Pension Automation Off-ramp: (?<offramp_status>[A-Z_]+) - (?<offramp_reason>.*)$/
         </pattern>
-        <pattern>
-          format regexp
-          expression /^Pension Automation Off-ramp: (?<offramp_status>[A-Z_]+) - Claim ID (?<claimid>[0-9]+) (?<offramp_reason>.*)$/
-        </pattern>
-        <pattern>
-          format regexp
-          expression /^Pension Automation Off-ramp: (?<offramp_status>[A-Z_]+) - (?<offramp_reason>.*?) for claim ID (?<claimid>[0-9]+)$/
-        </pattern>
-        <pattern>
-          format regexp
-          expression /^Claim (?<claimid>[0-9]+)/
-        </pattern>
+#        <pattern>
+#          format regexp
+#          expression /^Classifier Decision for claim ID (?<claimid>[0-9]+): (?<classifier_decision>[A-Z_]+), (?<classifier_match>[A-Z_]+)$/
+#        </pattern>
         <pattern>
           format none
         </pattern>
@@ -142,7 +113,7 @@ data:
     </filter>
 
     # Send the logs to elasticsearch
-    <match pension-automation-prod.kubernetes.**>
+    <match **.kubernetes.**>
       @type elasticsearch_dynamic
       include_tag_key true
       scheme "#{ENV.fetch('ELASTICSEARCH_SCHEME', 'http')}"

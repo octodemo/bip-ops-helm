@@ -76,9 +76,38 @@ data:
       @type kubernetes_metadata
     </filter>
 
+    # Tag the record based on the namespace
+    <match kubernetes.**>
+      @type rewrite_tag_filter
+      <rule>
+        key $['kubernetes']['namespace_name']
+        pattern ^(.+)$
+        tag $1.${tag}
+      </rule>
+    </match>
+    
+    # Attempt to parse the log field as json
+    <filter **>
+      @type parser
+      key_name log
+      reserve_time
+      reserve_data
+      remove_key_name_field true
+      <parse>
+        @type multi_format
+        <pattern>
+          format json
+          types claimid:integer
+        </pattern>
+        <pattern>
+          format none
+        </pattern>
+      </parse>
+    </filter>
+
     {{ if .Values.aggregator.enabled }}
     # Forward all logs to the aggregators
-    <match **>
+    <match {ngl-prod,pension-automation-prod}.kubernetes.**>
       @type forward
       {{- $fullName := (include "fluentd.fullname" .) }}
       {{- $global := . }}
@@ -97,14 +126,19 @@ data:
       <buffer>
         @type file
         path /opt/bitnami/fluentd/logs/buffers/logs.buffer
+        # Retry
+        retry_type exponential_backoff
+        retry_forever
+        retry_max_internval 90
         flush_thread_count 2
         flush_interval 5s
       </buffer>
     </match>
     {{- else }}
-    # Send the logs to the standard output
+
+    # Drop everything else
     <match **>
-      @type stdout
+      @type null
     </match>
     {{- end -}}
 {{- end -}}
