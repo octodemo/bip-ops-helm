@@ -107,7 +107,7 @@ data:
 
     {{ if .Values.aggregator.enabled }}
     # Forward all logs to the aggregators
-    <match {ngl-prod,pension-automation-prod}.kubernetes.**>
+    <match *.kubernetes.**>
       @type forward
       {{- $fullName := (include "fluentd.fullname" .) }}
       {{- $global := . }}
