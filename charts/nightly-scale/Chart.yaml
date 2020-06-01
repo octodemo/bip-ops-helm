@@ -20,6 +20,6 @@ version: 0.1.5
 # incremented each time you make changes to the application.
 appVersion: 0.1.0
 
-dependencies:
-  - name: deployment-scaler-cr
-    version: "~= 1.0"
+#dependencies:
+#  - name: deployment-scaler-cr
+#    version: "~= 1.0"
