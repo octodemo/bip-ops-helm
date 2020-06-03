@@ -81,7 +81,7 @@ data:
     </filter>
 
     # Expand out message data
-    <filter pension-automation-prod.kubernetes.**>
+    <filter {pension-automation-prod,pension-automation-prodtest}.kubernetes.**>
       @type parser
       key_name message
       reserve_time
