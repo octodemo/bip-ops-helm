@@ -86,6 +86,24 @@ data:
       </rule>
     </match>
     
+    # Break out bip-app and bip-env fields based on namespace
+    <filter *.kubernetes.**>
+      @type parser
+      key_name $.kubernetes.namespace
+      reserve_time
+      reserve_data
+      <parse>
+        @type multi_format
+        <pattern>
+          format regexp
+          expression /^(?<bip-app>[a-zA-Z\-]+?)-(?<bip-env>(prod|prodtest|cola|preprod))$/
+        </pattern>
+        <pattern>
+          format none
+        </pattern>
+      </parse>
+    </filter>
+
     # Attempt to parse the log field as json
     <filter **>
       @type parser
