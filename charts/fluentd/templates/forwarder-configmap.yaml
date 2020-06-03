@@ -104,6 +104,12 @@ data:
       </parse>
     </filter>
 
+    # Detect Exceptions/Stacktraces
+    <match *.kubernetes.**>
+      @type detect_exceptions
+      multiline_flush_interval 5
+    </match>
+
     # Attempt to parse the log field as json
     <filter **>
       @type parser
