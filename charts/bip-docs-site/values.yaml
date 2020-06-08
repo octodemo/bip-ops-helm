@@ -1,0 +1,19 @@
+image:
+  registry: docker.io
+  repository: nginx
+  tag: 1.19.0
+  ## Specify a imagePullPolicy
+  ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
+  ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
+  ##
+  pullPolicy: IfNotPresent
+
+ingress:
+  host: docs.prod8.bip.va.gov
+
+deployment:
+  replicaCount: 1
+
+git:
+  repo: git@ssh.github.com:department-of-veterans-affairs/bip-ops-docs.git
+  sshkey_secret: bip-ops-docs-deploy
