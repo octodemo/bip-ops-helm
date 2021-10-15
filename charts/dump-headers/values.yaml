@@ -1,0 +1,6 @@
+---
+image: container-registry.prod8.bip.va.gov/ops/dump-headers
+ingress:
+  enabled: true
+port: 8080
+tag: latest

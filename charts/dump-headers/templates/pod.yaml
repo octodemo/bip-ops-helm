@@ -1,0 +1,16 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: dump-headers
+  name: dump-headers
+spec:
+  containers:
+    - name: dump-headers
+      image: {{ .Values.image }}:{{ .Values.tag }}
+      ports:
+        - containerPort: {{ .Values.port }}
+          protocol: TCP
+  restartPolicy: Always
+
