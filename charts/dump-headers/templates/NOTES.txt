@@ -1,0 +1,14 @@
+The dump-headers package has been installed.
+
+Next Steps:
+1. Verify pod came up correctly: kubectl get pods
+2. Tail logs: kubectl logs -f dump-headers
+{{ if .Values.ingress.enabled -}}
+3. Visit http://{{ .Values.ingress.host}}
+4. Verify the http headers are being displayed in the log file from step #2.
+{{ else -}}
+3. Setup port-forward to test: kubectl port-forward pod/dump-headers {{ .Values.port }}:{{ .Values.port }}
+4. Open a web browser to http://localhost:8080
+
+This install is without an ingress which means it leaves the ingress controllers out of the network path. This will not be a good end-to-end test. If this is a mistake and you'd like to reinstall with the ingress controller, run the install command again with the following options: "--set ingress.enabled=true --set ingress.host=YOURHOST.example.com".
+{{ end -}}
