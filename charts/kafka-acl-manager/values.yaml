@@ -4,6 +4,9 @@
 
 replicaCount: 1
 
+testpod:
+  enabled: false
+
 image:
   repository: kafka-acl-manager
   pullPolicy: IfNotPresent
