@@ -6,7 +6,7 @@ metadata:
   name: kam-admin
 subjects:
 - kind: User
-  name: {{ include "kafka-acl-manager.serviceAccountName" . }}
+  name: system:serviceaccount:{{ .Values.Namespace }}:{{ include "kafka-acl-manager.serviceAccountName" . }}
   apiGroup: rbac.authorization.k8s.io
 roleRef:
   kind: ClusterRole

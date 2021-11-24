@@ -4,11 +4,17 @@
 
 replicaCount: 1
 
+Namespace: default
+
 testpod:
-  enabled: false
+  enabled: true
+
+env:
+  - name: cluster
+    value: minikube
 
 image:
-  repository: kafka-acl-manager
+  repository: "kafka-acl-manager"
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: "latest"
@@ -44,7 +50,7 @@ service:
   port: 5000
 
 ingress:
-  enabled: false
+  enabled: true
   className: ""
   annotations: {}
     # kubernetes.io/ingress.class: nginx
