@@ -1,0 +1,41 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: consul-svc-cleaner
+spec:
+  jobTemplate:
+    metadata:
+      labels:
+        app: consul-svc-cleaner
+    spec:
+      template:
+        metadata:
+          labels:
+            app: consul-svc-cleaner
+        spec:
+          containers:
+          - name: consul-cleaner
+            image: docker.io/consul:{{ .Chart.AppVersion }}
+            imagePullPolicy: IfNotPresent
+            env:
+            - name: CONSUL_HTTP_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  key: token
+                  name: {{ .Values.env }}-consul-helm-bootstrap-acl-token
+            - name: ENV
+              value: {{ .Values.env }}
+            command: ["/bin/sh"]
+            args: ["-c", "for x in $(seq 0 2); do for y in $(curl -v ${ENV}-consul-helm-server-${x}.${ENV}-consul-helm-server.vault.svc:8500/v1/agent/services|jq -r '.[]|select(.ID|test(\"^bip.*$\"))|.ID'|grep -v hazelcast);do consul services deregister -http-addr=${ENV}-consul-helm-server-${x}.${ENV}-consul-helm-server.vault.svc:8500 -id=${y};done;done"]
+            resources:
+              limits:
+                cpu: 100m
+                memory: 128Mi
+              requests:
+                cpu: 100m
+                memory: 128Mi
+          restartPolicy: Never
+  schedule: 0 10 * * *
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  concurrencyPolicy: Forbid
