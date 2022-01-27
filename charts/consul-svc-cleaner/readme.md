@@ -9,7 +9,7 @@ $ helm repo add bip https://department-of-veterans-affairs.github.io/bip-ops-hel
 ## Install
 
 ```sh
-$ helm install consul-svc-cleaner consul-svc-cleaner --set env=stage8
+$ helm install consul-svc-cleaner bip/consul-svc-cleaner --set env=stage8
 ```
 
 Notes:
