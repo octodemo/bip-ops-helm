@@ -8,8 +8,8 @@ This repository is for [helm](https://helm.sh) charts used by BIP Ops teams. **P
 
 | Name | Purpose |
 | --- | --- |
-| [consul-svc-cleaner](charts/consul-svc-cleaner/) | Sets up a daily Kubernetes CronJob to clean up consul service healthchecks. |
-| [dump-headers](charts/dump-headers/) | Deploys a single pod that will output http headers to stdout. |
+| [consul-svc-cleaner](https://department-of-veterans-affairs.github.io/bip-ops-helm/charts/consul-svc-cleaner/) | Sets up a daily Kubernetes CronJob to clean up consul service healthchecks. |
+| [dump-headers](https://department-of-veterans-affairs.github.io/bip-ops-helm/charts/dump-headers/) | Deploys a single pod that will output http headers to stdout. |
 
 ## Add repo to Helm
 
