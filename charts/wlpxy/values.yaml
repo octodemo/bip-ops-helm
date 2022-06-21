@@ -14,86 +14,92 @@ deployment:
 # port defaults to 7001
 endpoints:
   - name: cola-awards
-    ip: 10.247.69.236
+    ip: 10.247.68.60
   - name: cola-core
-    ip: 10.247.69.137
-  - name: cola-haz
-    ip: 10.247.68.160
-    port: 8001
+    ip: 10.247.69.158
   - name: cola-rating
-    ip: 10.247.69.89
+    ip: 10.247.68.221
+  - name: cola-haz
+    ip: 10.247.68.245
+    port: 8001
   - name: cola-res
-    ip: 10.247.68.36
+    ip: 10.247.68.221
     port: 9101
   - name: cola-spring
-    ip: 10.247.68.22
+    ip: 10.247.69.157
     port: 8100
-  - name: oem
-    ip: 10.247.67.214
-    port: 7802
+  #
   - name: perf-awards
-    ip: 10.247.68.249
+    ip: 10.247.67.224
   - name: perf-core
-    ip: 10.247.68.149
-  - name: perf-haz
-    ip: 10.247.68.233
-    port: 8001
+    ip: 10.247.67.121
   - name: perf-rating
-    ip: 10.247.68.51
-    port: 7001
+    ip: 10.247.67.125
+  - name: perf-haz
+    ip: 10.247.66.137
+    port: 8001
   - name: perf-res
-    ip: 10.247.69.205
+    ip: 10.247.67.125
     port: 9101
   - name: perf-spring
-    ip: 10.247.68.193
+    ip: 10.247.66.166
     port: 8100
+  #
   - name: prdtst-awards
-    ip: 10.247.68.156
+    ip: 10.247.69.239
   - name: prdtst-core
-    ip: 10.247.68.68
-  - name: prdtst-haz
-    ip: 10.247.68.114
-    port: 8001
+    ip: 10.247.69.53
   - name: prdtst-rating
-    ip: 10.247.68.240
-  - name: prdtst-res
-    ip: 10.247.69.92
-    port: 9101
-  - name: prdtst-psring
-    ip: 10.247.69.150
-    port: 8100
-  - name: pre-awards
-    ip: 10.247.67.169
-  - name: pre-core
-    ip: 10.247.66.114
-  - name: pre-haz
-    ip: 10.247.67.28
+    ip: 10.247.69.108
+  - name: prdtst-haz
+    ip: 10.247.68.57
     port: 8001
+  - name: prdtst-res
+    ip: 10.247.69.108
+    port: 9101
+  - name: prdtst-spring
+    ip: 10.247.68.146
+    port: 8100
+  #
+  - name: pre-awards
+    ip: 10.247.66.183
+  - name: pre-core
+    ip: 10.247.66.206
   - name: pre-rating
-    ip: 10.247.67.210
+    ip: 10.247.67.112
+  - name: pre-haz
+    ip: 10.247.67.2
+    port: 8001
   - name: pre-res
-    ip: 10.247.67.132
+    ip: 10.247.67.112
     port: 9101
   - name: pre-spring
-    ip: 10.247.66.248
+    ip: 10.247.66.126
     port: 8100
+  #
   - name: prod-awards
     ip: 10.247.65.165
   - name: prod-core
     ip: 10.247.64.172
+  - name: prod-rating
+    ip: 10.247.65.233
   - name: prod-haz
     ip: 10.247.64.14
     port: 8001
-  - name: prod-rating
-    ip: 10.247.65.233
   - name: prod-res
-    ip: 10.247.65.164
+    ip: 10.247.65.233
     port: 9101
+  #
+  - name: oem
+    ip: 10.247.67.214
+    port: 7802
+
 
 endpoints_https:
   - name: prod-spring
     ip: 10.247.64.194
     port: 8100
+
 
 ingress:
   enabled: true
