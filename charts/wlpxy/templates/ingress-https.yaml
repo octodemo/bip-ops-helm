@@ -1,0 +1,38 @@
+{{- if .Values.ingress.enabled  -}}
+---
+# Ingress for all proxied (ssl) endpoints
+kind: Ingress
+{{ if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1beta1
+{{- else -}}
+apiVersion: extensions/v1beta1
+{{- end }}
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: HTTPS
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      proxy_set_header WL-Proxy-SSL "true";
+  labels:
+    {{- include "wlpxy.labels" . | nindent 4 }}
+  name: "{{ include "wlpxy.name" . }}-https"
+spec:
+  rules:
+{{- $domain := .Values.ingress.domain | default "wlpxy.prod8.bip.va.gov" -}}
+{{- range .Values.endpoints_https }}
+    - host: "{{ .name }}.{{ $domain }}"
+      http:
+        paths:
+          - path: {{ .path | default "/" }}
+            backend:
+              serviceName: {{ .name }}
+              servicePort: {{ .port | default 7001 }}
+{{- end -}}
+{{- if .Values.ingress.tls.enabled }}
+  tls:
+    - hosts:
+{{- range .Values.endpoints_https }}
+        - "{{ .name }}.{{ $domain }}"
+{{- end }}
+      secretName: {{ .Values.ingress.tls.secretname }}
+{{- end }}
+{{- end }}

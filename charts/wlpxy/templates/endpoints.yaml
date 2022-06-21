@@ -1,0 +1,15 @@
+{{- $labels := (include "wlpxy.labels" .) -}}
+{{- range .Values.endpoints }}
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  labels:
+    {{- $labels | nindent 4 }}
+  name: {{ .name }}
+subsets:
+  - addresses:
+      - ip: {{ .ip | quote }}
+    ports:
+      - port: {{ .port | default 7001 }}
+{{- end }}

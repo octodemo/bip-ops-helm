@@ -1,0 +1,105 @@
+# Default values for wlpxy.
+
+deployment:
+  haproxy:
+    image: container-registry.prod8.bip.va.gov/bip/haproxy
+    tag: "2.3.5-alpine"
+  nginx:
+    image: container-registry.prod8.bip.va.gov/bip/wlpxy/nginx
+    tag: "1.2"
+#  annotations:
+#    iam.amazonaws.com/role: project-wlpxy
+
+# The endpoints for the proxy
+# port defaults to 7001
+endpoints:
+  - name: cola-awards
+    ip: 10.247.69.236
+  - name: cola-core
+    ip: 10.247.69.137
+  - name: cola-haz
+    ip: 10.247.68.160
+    port: 8001
+  - name: cola-rating
+    ip: 10.247.69.89
+  - name: cola-res
+    ip: 10.247.68.36
+    port: 9101
+  - name: cola-spring
+    ip: 10.247.68.22
+    port: 8100
+  - name: oem
+    ip: 10.247.67.214
+    port: 7802
+  - name: perf-awards
+    ip: 10.247.68.249
+  - name: perf-core
+    ip: 10.247.68.149
+  - name: perf-haz
+    ip: 10.247.68.233
+    port: 8001
+  - name: perf-rating
+    ip: 10.247.68.51
+    port: 7001
+  - name: perf-res
+    ip: 10.247.69.205
+    port: 9101
+  - name: perf-spring
+    ip: 10.247.68.193
+    port: 8100
+  - name: prdtst-awards
+    ip: 10.247.68.156
+  - name: prdtst-core
+    ip: 10.247.68.68
+  - name: prdtst-haz
+    ip: 10.247.68.114
+    port: 8001
+  - name: prdtst-rating
+    ip: 10.247.68.240
+  - name: prdtst-res
+    ip: 10.247.69.92
+    port: 9101
+  - name: prdtst-psring
+    ip: 10.247.69.150
+    port: 8100
+  - name: pre-awards
+    ip: 10.247.67.169
+  - name: pre-core
+    ip: 10.247.66.114
+  - name: pre-haz
+    ip: 10.247.67.28
+    port: 8001
+  - name: pre-rating
+    ip: 10.247.67.210
+  - name: pre-res
+    ip: 10.247.67.132
+    port: 9101
+  - name: pre-spring
+    ip: 10.247.66.248
+    port: 8100
+  - name: prod-awards
+    ip: 10.247.65.165
+  - name: prod-core
+    ip: 10.247.64.172
+  - name: prod-haz
+    ip: 10.247.64.14
+    port: 8001
+  - name: prod-rating
+    ip: 10.247.65.233
+  - name: prod-res
+    ip: 10.247.65.164
+    port: 9101
+
+endpoints_https:
+  - name: prod-spring
+    ip: 10.247.64.194
+    port: 8100
+
+ingress:
+  enabled: true
+  domain: wlpxy.prod8.bip.va.gov
+  tls:
+    enabled: true
+    secretname: wlpxy-tls
+
+# vim: ts=2 sw=2 expandtab:

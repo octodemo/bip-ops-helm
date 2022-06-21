@@ -1,0 +1,9 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    {{- include "wlpxy.labels" . | nindent 4 }}
+  name: {{ template "wlpxy.nginx.name" . }}
+data:
+{{ (.Files.Glob "files/nginx.conf").AsConfig | indent 2 }}

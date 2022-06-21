@@ -1,0 +1,38 @@
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  labels:
+    {{- include "wlpxy.labels" . | nindent 4 }}
+  name: {{ include "wlpxy.name" . }}
+spec:
+  replicas: {{ .Values.deployment.replicas | default 1 }}
+  selector:
+    matchLabels:
+      app: {{ include "wlpxy.name" . }}
+  template:
+    metadata:
+{{- if .Values.deployment.annotations }}
+      annotations: {{ .Values.deployment.annotations | toYaml | nindent 8 }}
+{{- end }}
+      labels:
+        app: {{ include "wlpxy.name" . }}
+        {{- include "wlpxy.labels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: nginx
+          image: {{ include "wlpxy.imageandtag" .Values.deployment.nginx }}
+          ports:
+            - containerPort: 1280
+          livenessProbe:
+            tcpSocket:
+              port: 1280
+            initialDelaySeconds: 10
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 1280
+            initialDelaySeconds: 10
+            periodSeconds: 30
+      restartPolicy: Always

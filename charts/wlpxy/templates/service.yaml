@@ -1,0 +1,22 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ include "wlpxy.name" . }}-nginx
+spec:
+  ports:
+    - port: 1280
+  selector:
+    app: {{ include "wlpxy.name" . }}
+
+{{ range .Values.endpoints -}}
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ .name }}
+spec:
+  clusterIP: None
+  ports:
+    - port: {{ .port | default 7001 }}
+{{ end -}}

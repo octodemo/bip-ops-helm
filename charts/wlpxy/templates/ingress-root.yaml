@@ -1,0 +1,29 @@
+{{- if .Values.ingress.enabled  -}}
+---
+# Default root ingress
+kind: Ingress
+{{ if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1beta1
+{{- else -}}
+apiVersion: extensions/v1beta1
+{{- end }}
+metadata:
+  labels:
+    {{- include "wlpxy.labels" . | nindent 4 }}
+  name: "{{ include "wlpxy.name" . }}-nginx"
+spec:
+  rules:
+    - host: {{ .Values.ingress.domain }}
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: "{{ include "wlpxy.name" . }}-nginx"
+              servicePort: 1280
+{{- if .Values.ingress.tls.enabled }}
+  tls:
+    - hosts:
+        - {{ .Values.ingress.domain }}
+      secretName: {{ .Values.ingress.tls.secretname }}
+{{- end }}
+{{- end }}
