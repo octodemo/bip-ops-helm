@@ -6,7 +6,7 @@ deployment:
     tag: "2.3.5-alpine"
   nginx:
     image: container-registry.prod8.bip.va.gov/bip/wlpxy/nginx
-    tag: "1.2"
+    tag: "1.1"
 #  annotations:
 #    iam.amazonaws.com/role: project-wlpxy
 
@@ -78,17 +78,18 @@ endpoints:
     port: 8100
   #
   - name: prod-awards
-    ip: 10.247.65.165
+    ip: 10.247.65.215
   - name: prod-core
-    ip: 10.247.64.172
+    ip: 10.247.65.25
   - name: prod-rating
-    ip: 10.247.65.233
+    ip: 10.247.64.29
   - name: prod-haz
-    ip: 10.247.64.14
+    ip: 10.247.64.248
     port: 8001
   - name: prod-res
-    ip: 10.247.65.233
+    ip: 10.247.64.29
     port: 9101
+
   #
   - name: oem
     ip: 10.247.67.214
@@ -97,7 +98,7 @@ endpoints:
 
 endpoints_https:
   - name: prod-spring
-    ip: 10.247.64.194
+    ip: 10.247.65.39
     port: 8100
 
 
